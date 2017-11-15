@@ -43,7 +43,7 @@ static bool SHOW_GROUND = true;
 static bool SHOW_COORD_AXIS = false;
 
 //  background color (black)
-static float clear_color[4] = { 0.0f, 0.0f, 0.0f, 0.0f};
+static float clear_color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 void shutDown(int _exit_code)
 {
@@ -57,7 +57,7 @@ void drawHUD()
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	Color color(1.0f,1.0f,0.0f,1.0f);
+	Color color(1.0f, 1.0f, 0.0f, 1.0f);
 	// five columns
 	float x1 = -0.8f, x2 = -0.4f, x3 = 0.0f, x4 = 0.25f, x5 = 0.5f;
 	// row cursor
@@ -72,7 +72,7 @@ void drawHUD()
 	renderString(x1, y, 0.0f, color, s.c_str());
 	s = toString(anim_ctrl.getRunTime());
 	renderString(x2, y, 0.0f, color, s.c_str());
-	
+
 	y -= row_height;
 
 	s = "Global Time Warp: ";
@@ -115,7 +115,7 @@ void display(void)
 	input_processor.processInputs(elapsed_time);
 
 	// Set up openGL to draw next frame.
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	/*	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	camera.setSceneView();
@@ -124,28 +124,29 @@ void display(void)
 	// draw background objects
 	for (unsigned short b=0; b < render_lists.background.size(); b++)
 	{
-		Object* go = render_lists.background[b];
-		if (go->isVisible())
-		{
-			Matrix4x4 world_xform;
-			go->render(world_xform);
-		}
+	Object* go = render_lists.background[b];
+	if (go->isVisible())
+	{
+	Matrix4x4 world_xform;
+	go->render(world_xform);
+	}
 	}
 
 	// draw erasable objects
 	for (unsigned short b = 0; b < render_lists.erasables.size(); b++)
 	{
-		Object* go = render_lists.erasables[b];
-		if (go->isVisible())
-		{
-			Matrix4x4 world_xform;
-			go->render(world_xform);
-		}
+	Object* go = render_lists.erasables[b];
+	if (go->isVisible())
+	{
+	Matrix4x4 world_xform;
+	go->render(world_xform);
 	}
-
+	}
+	*/
 	// Tell the animation subsystem to update the character, then redraw it.
 	if (anim_ctrl.isReady())
 	{
+		// TODO: pass an argument down here (file name)
 		if (anim_ctrl.updateAnimation(elapsed_time))
 		{
 			for (unsigned short b = 0; b < render_lists.bones.size(); b++)
@@ -161,7 +162,7 @@ void display(void)
 	}
 
 	// draw the heads-up display
-	drawHUD();
+	//drawHUD();
 
 	// Activate the new frame.
 	glutSwapBuffers();
@@ -180,9 +181,9 @@ void buildObjects()
 		// create a sky model directly by creating an instance of InvertedSphereModel
 		// which is a textured model
 		SphereModel* skymod = new InvertedSphereModel(800, 3,
-			Color(1.0f,1.0f,0.5f),(char*)"skymap1.bmp");
+			Color(1.0f, 1.0f, 0.5f), (char*)"skymap1.bmp");
 		// build a sky object associated with the sky model
-		Object* sky = new Object(skymod, Vector3D(0.0f,0.0f,0.0f), Vector3D(0.0f,0.0f,0.0f));
+		Object* sky = new Object(skymod, Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f));
 		// store sky object for rendering
 		render_lists.background.push_back(sky);
 	}
@@ -193,7 +194,7 @@ void buildObjects()
 		ModelSpecification groundspec("Ground");
 		// build a ground object associated with the ground model
 		Object* ground = new Object(groundspec,
-			Vector3D(0.0f,0.0f,0.0f), Vector3D(0.0f,0.0f,0.0f), Vector3D(1.0f,1.0f,1.0f));
+			Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(1.0f, 1.0f, 1.0f));
 		// store ground object for rendering
 		render_lists.background.push_back(ground);
 	}
@@ -205,7 +206,7 @@ void buildObjects()
 		caxisspec.addSpec("length", "100");
 		// build a coordinate axes object associated with the coordinate axes model
 		Object* caxis = new Object(caxisspec,
-			Vector3D(0.0f,0.0f,0.0f), Vector3D(0.0f,0.0f,0.0f));
+			Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f));
 		// store coordinate axes object for rendering
 		render_lists.background.push_back(caxis);
 	}
@@ -222,7 +223,7 @@ static void reshape(int w, int h)
 	glLoadIdentity();
 	camera.projectionParameters(
 		40.0,									// vertical FOV
-		float(window_width)/window_height,		// aspect ratio
+		float(window_width) / window_height,		// aspect ratio
 		1.0,									// near plane
 		1000.0);								// far plane
 }
@@ -231,7 +232,7 @@ static void reshape(int w, int h)
 // It sets various openGL parameters that control rendering.
 void initializeRenderer()
 {
-    glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	glClearDepth(1.0f);
 	glShadeModel(GL_SMOOTH);
 	glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
@@ -264,28 +265,28 @@ int main(int argc, char **argv)
 	try
 	{
 		initializeGLUT(argc, argv);
-		initializeRenderer();
+		//initializeRenderer();
 		// The input manager needs to have register call back function with GLUT
 		// to receive keyboard and mouse actions. This needs to happen after GLUT
 		// initialization, so it is implemented in a member functions, rather than
 		// the InputManager constructor.
-		input_manager.registerGlutHandlers();
+		//input_manager.registerGlutHandlers();
 
-		glutReshapeFunc(reshape);
+		//glutReshapeFunc(reshape);
 		glutDisplayFunc(display);
 		glutIdleFunc(display);
 
 		// Call into the SKA Graphics module to select the default lights.
-		initializeDefaultLighting();
+		//initializeDefaultLighting();
 
 		// Application specific initialization of the camera/viewpoint.
-		camera.initializeCamera(window_width, window_height);
+		//camera.initializeCamera(window_width, window_height);
 
 		// construct background objects
-		buildObjects();
+		//buildObjects();
 
 		// Record any openGL errors.
-		checkOpenGLError(202);
+		//checkOpenGLError(202);
 
 		// Start the global system timer/clock.
 		system_timer.reset();
