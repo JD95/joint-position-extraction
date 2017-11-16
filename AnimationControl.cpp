@@ -9,7 +9,6 @@
 #include <Core/SystemConfiguration.h>
 // C/C++ libraries
 #include <cstdio>
-#include <sstream>
 #include <complex>
 // SKA modules
 #include <Core/Utilities.h>
@@ -31,7 +30,7 @@ AnimationControl anim_ctrl;
 
 enum MOCAP_TYPE { BVH, AMC };
 string fileText = "";
-string joint_names[21] = { "Hips", "Spine", "Spine1", "Neck", "Head", "LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand",
+string joint_names[20] = { "Spine", "Spine1", "Neck", "Head", "LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand",
 "RightShoulder", "RightArm", "RightForeArm", "RightHand", "LeftUpLeg", "LeftLeg", "LeftFoot",
 "LeftToeBase", "RightUpLeg", "RightLeg", "RightFoot", "RightToeBase" };
 
@@ -78,12 +77,6 @@ void AnimationControl::restart()
 	next_marker_time = marker_time_interval;
 }
 
-string Convert(float number) {
-	std::ostringstream buff;
-	buff << number;
-	return buff.str();
-}
-
 bool AnimationControl::updateAnimation(float _elapsed_time)
 {
 	//std::cout << "Elapsed time" << _elapsed_time << endl;
@@ -98,11 +91,10 @@ bool AnimationControl::updateAnimation(float _elapsed_time)
 		fileText += joint_names[i] + "X " + joint_names[i] + "Y " + joint_names[i] + "Z ";
 	}
 	fileText += "\n";
-	for (int i = 0; i < 21; i++) {
-		characters[0]->getBonePositions(joint_names[i].c_str(), start, end);
-		fileText += Convert(start.getX()) + " " + Convert(start.getY()) + " " + Convert(start.getZ()) + " ";
-	}
-	fileText += "\n";
+	/*for (int i = 0; i < 21 ; i++) {
+	characters[0]->getBonePositions(joint_names[i], start, end);
+	fileText += start.getX + " " + start.getY + " " + start.getZ + " ";
+	}*/
 	readoutJointData("test.txt");
 	characters[0]->getBonePositions("LeftToeBase", start, end);
 	std::cout << "Getting x of ltoes: " << start.getX() << endl;
