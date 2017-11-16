@@ -24,13 +24,14 @@
 #include "RenderLists.h"
 #include "OpenMotionSequenceController.h"
 #include <fstream>
+#include <sstream>
 
 // global single instance of the animation controller
 AnimationControl anim_ctrl;
 
 enum MOCAP_TYPE { BVH, AMC };
 string fileText = "";
-string joint_names[20] = { "Spine", "Spine1", "Neck", "Head", "LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand",
+string joint_names[21] = { "Hips", "Spine", "Spine1", "Neck", "Head", "LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand",
 "RightShoulder", "RightArm", "RightForeArm", "RightHand", "LeftUpLeg", "LeftLeg", "LeftFoot",
 "LeftToeBase", "RightUpLeg", "RightLeg", "RightFoot", "RightToeBase" };
 
@@ -95,7 +96,7 @@ bool AnimationControl::updateAnimation(float _elapsed_time)
 	characters[0]->getBonePositions(joint_names[i], start, end);
 	fileText += start.getX + " " + start.getY + " " + start.getZ + " ";
 	}*/
-	readoutJointData("test.txt");
+	readDataToFile("test.txt");
 	characters[0]->getBonePositions("LeftToeBase", start, end);
 	std::cout << "Getting x of ltoes: " << start.getX() << endl;
 
@@ -104,7 +105,7 @@ bool AnimationControl::updateAnimation(float _elapsed_time)
 	return true;
 }
 
-void readoutJointData(string fileName) {
+void readDataToFile(string fileName) {
 	std::ofstream outfile(fileName);
 	outfile << fileText << std::endl;
 	outfile.close();

@@ -254,10 +254,8 @@ int main(int argc, char **argv)
 {
 	// initialize the animation subsystem, which reads the
 	// mocap data files and sets up the character(s)
-	anim_ctrl.loadCharacters(argv[1]);
-	std::cout << argv[1];
-	std::cin.get();
-	exit(0);
+	string file = argv[1] != nullptr ? argv[1] : "take1.bvh";
+	anim_ctrl.loadCharacters(file);
 	if (!anim_ctrl.isReady())
 	{
 		logout << "main(): Unable to load characters. Aborting program." << endl;
@@ -275,7 +273,7 @@ int main(int argc, char **argv)
 		// the InputManager constructor.
 		//input_manager.registerGlutHandlers();
 
-		//glutReshapeFunc(reshape);
+		glutReshapeFunc(reshape);
 		glutDisplayFunc(display);
 		glutIdleFunc(display);
 
@@ -295,6 +293,7 @@ int main(int argc, char **argv)
 		system_timer.reset();
 
 		// Jump into the openGL render loop.
+
 		glutMainLoop();
 	}
 	catch (BasicException& excpt)

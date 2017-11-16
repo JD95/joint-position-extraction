@@ -19,21 +19,16 @@ using namespace std;
 #define ARRAY_SIZE(array) (sizeof((array))/sizeof((array[0])))
 
 class Skeleton;
-
+void readDataToFile(string fileName);
 struct MotionData {
 	long frame;
 	float time;
-	Vector3D l_position;
-	Vector3D l_distance;
-	Vector3D l_velocity;
+	Vector3D position;
+	Vector3D distance;
+	Vector3D velocity;
 
-	Vector3D r_position;
-	Vector3D r_distance;
-	Vector3D r_velocity;
-
-	MotionData(Vector3D l, Vector3D r, long f, float t)
-		: l_position(l)
-		, r_position(r)
+	MotionData(Vector3D p, long f, float t)
+		: position(p)
 		, frame(f)
 		, time(t)
 	{}
@@ -47,8 +42,8 @@ struct FootData {
 	float time;
 	float end_time;
 
-	FootData() : cycles(0), prev_frame(0), time(0) {
-		motion.reserve(2000);
+	FootData() : cycles(0), prev_frame(0) {
+		motion.reserve(1000);
 	}
 };
 
@@ -60,7 +55,7 @@ private:
 	float run_time;
 	vector<Skeleton*> characters;
 
-	vector<FootData> foot_data;
+	FootData foot_data[3];
 
 	// state for enhanced functionality
 	float global_timewarp;
@@ -75,7 +70,7 @@ public:
 	// loadCharacters() sets up the characters and their motion control.
 	// It places all the bone objects for each character into the render list,
 	// so that they can be drawn by the graphics subsystem.
-	void loadCharacters();
+	void loadCharacters(string filename);
 
 	// updateAnimation() should be called every frame to update all characters.
 	// _elapsed_time should be the time (in seconds) since the last frame/update.
