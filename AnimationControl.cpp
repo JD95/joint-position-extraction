@@ -44,10 +44,8 @@ struct LoadSpec {
 		: mocap_type(_mocap_type), scale(_scale), color(_color), motion_file(_motion_file), skeleton_file(_skeleton_file) { }
 };
 
-const short NUM_CHARACTERS = 1;
-LoadSpec load_specs[NUM_CHARACTERS] = {
-	LoadSpec(BVH, 0.2f, Color(0.0f,1.0f,0.0f), string("take1.bvh"))
-};
+//const short NUM_CHARACTERS = 1;
+//LoadSpec load_specs[NUM_CHARACTERS] = {};
 
 Object* createMarkerBox(Vector3D position, Color _color)
 {
@@ -138,7 +136,7 @@ static Skeleton* buildCharacter(
 	return _skel;
 }
 
-void AnimationControl::loadCharacters()
+void AnimationControl::loadCharacters(string filename)
 {
 	data_manager.addFileSearchPath(AMC_MOTION_FILE_PATH);
 	data_manager.addFileSearchPath(BVH_MOTION_FILE_PATH);
@@ -150,8 +148,8 @@ void AnimationControl::loadCharacters()
 	char* filename2 = NULL;
 	Skeleton* character = NULL;
 	pair<Skeleton*, MotionSequence*> read_result;
-
-	for (short c = 0; c < NUM_CHARACTERS; c++)
+	LoadSpec load_specs[1] = { LoadSpec(BVH, 0.2f, Color(0.0f,1.0f,0.0f), string(filename)) };
+	for (short c = 0; c < 1; c++)
 	{
 		if (load_specs[c].mocap_type == AMC)
 		{

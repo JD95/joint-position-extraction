@@ -254,7 +254,10 @@ int main(int argc, char **argv)
 {
 	// initialize the animation subsystem, which reads the
 	// mocap data files and sets up the character(s)
-	anim_ctrl.loadCharacters();
+	anim_ctrl.loadCharacters(argv[1]);
+	std::cout << argv[1];
+	std::cin.get();
+	exit(0);
 	if (!anim_ctrl.isReady())
 	{
 		logout << "main(): Unable to load characters. Aborting program." << endl;
