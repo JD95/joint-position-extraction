@@ -95,8 +95,13 @@ bool AnimationControl::updateAnimation(float _elapsed_time, string filename)
 }
 
 void AnimationControl::readDataToFile(string fileName, string fileContent) {
-	string file = fileName + "Parsed";
-	std::ofstream outfile(fileName, std::ios_base::app);
+	string file = "";
+	for (int i = 0; i < fileName.find("."); i++) {
+		file += fileName[i];
+	}
+	file += "Parsed.txt";
+
+	std::ofstream outfile(file, std::ios_base::app);
 	outfile << fileContent;
 	outfile.close();
 }
