@@ -30,10 +30,6 @@
 AnimationControl anim_ctrl;
 
 enum MOCAP_TYPE { BVH, AMC };
-string fileText = "";
-string joint_names[21] = { "Hips", "Spine", "Spine1", "Neck", "Head", "LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand",
-"RightShoulder", "RightArm", "RightForeArm", "RightHand", "LeftUpLeg", "LeftLeg", "LeftFoot",
-"LeftToeBase", "RightUpLeg", "RightLeg", "RightFoot", "RightToeBase" };
 
 struct LoadSpec {
 	MOCAP_TYPE mocap_type;
@@ -74,42 +70,35 @@ void AnimationControl::restart()
 {
 	render_lists.eraseErasables();
 	run_time = 0;
-	updateAnimation(0.0f);
+	updateAnimation(0.0f, "");
 	next_marker_time = marker_time_interval;
 }
 
-bool AnimationControl::updateAnimation(float _elapsed_time)
+bool AnimationControl::updateAnimation(float _elapsed_time, string filename)
 {
-	//std::cout << "Elapsed time" << _elapsed_time << endl;
+	std::cout << "run time" << run_time << endl;
 	if (!ready) return false;
 	run_time += _elapsed_time;
 	if (characters[0] != NULL) characters[0]->update(run_time);
 	Vector3D start, end;
 	// drop box at left toes of 1st character
 	// CAREFUL - bones names are different in different skeletons
-	fileText += "Frame# ";
-	for (int i = 0; i < 21; i++) {
-		fileText += joint_names[i] + "X " + joint_names[i] + "Y " + joint_names[i] + "Z ";
+	string fileText = "";
+	for (int i = 0; i < 26; i++) {
+		characters[0]->getBonePositions(joint_names[i].c_str(), start, end);
+		fileText += Convert(start.getX()) + " " + Convert(start.getY()) + " " + Convert(start.getZ()) + " ";
 	}
 	fileText += "\n";
-	/*for (int i = 0; i < 21 ; i++) {
-	characters[0]->getBonePositions(joint_names[i], start, end);
-	fileText += start.getX + " " + start.getY + " " + start.getZ + " ";
-	}*/
-	readDataToFile("test.txt");
-	characters[0]->getBonePositions("LeftToeBase", start, end);
-	std::cout << "Getting x of ltoes: " << start.getX() << endl;
+	readDataToFile(filename, fileText);
 
-	//	std::cout << "Getting y of ltoes: " << start.getY() << endl;
-	//	std::cout << "Getting z of ltoes: " << start.getZ() << endl;
 	return true;
 }
 
-void readDataToFile(string fileName) {
-	std::ofstream outfile(fileName);
-	outfile << fileText << std::endl;
+void AnimationControl::readDataToFile(string fileName, string fileContent) {
+	string file = fileName + "Parsed";
+	std::ofstream outfile(fileName, std::ios_base::app);
+	outfile << fileContent;
 	outfile.close();
-	exit(0);
 }
 
 static Skeleton* buildCharacter(
@@ -135,6 +124,12 @@ static Skeleton* buildCharacter(
 	_skel->setDescription1(_description1.c_str());
 	_skel->setDescription2(_description2.c_str());
 	return _skel;
+}
+
+string AnimationControl::Convert(float number) {
+	std::ostringstream buff;
+	buff << number;
+	return buff.str();
 }
 
 void AnimationControl::loadCharacters(string filename)
@@ -232,6 +227,7 @@ void AnimationControl::loadCharacters(string filename)
 	display_data.sequence_frame.resize(characters.size());
 
 	if (characters.size() > 0) ready = true;
+	std::cout << "DONE";
 }
 
 

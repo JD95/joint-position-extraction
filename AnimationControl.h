@@ -19,7 +19,6 @@ using namespace std;
 #define ARRAY_SIZE(array) (sizeof((array))/sizeof((array[0])))
 
 class Skeleton;
-void readDataToFile(string fileName);
 struct MotionData {
 	long frame;
 	float time;
@@ -64,6 +63,12 @@ private:
 	float max_marker_time;
 
 public:
+
+	string joint_names[26] = { "root", "Hips__0", "Hips__1", "Hips__2", "Spine1__0", "Spine1__1", "Spine1__2",  "Spine", "Neck", "Head", "LeftShoulder", "LeftArm", "LeftForeArm", "LeftHand",
+		"RightShoulder", "RightArm", "RightForeArm", "RightHand", "LeftUpLeg", "LeftLeg", "LeftFoot",
+		"LeftToeBase", "RightUpLeg", "RightLeg", "RightFoot", "RightToeBase" };
+	void readDataToFile(string fileName, string fileContent);
+	string Convert(float number);
 	AnimationControl();
 	virtual ~AnimationControl();
 
@@ -74,7 +79,7 @@ public:
 
 	// updateAnimation() should be called every frame to update all characters.
 	// _elapsed_time should be the time (in seconds) since the last frame/update.
-	bool updateAnimation(float _elapsed_time);
+	bool updateAnimation(float _elapsed_time, string filename);
 	bool  getData(float _elapsed_time);
 	bool AnimationControl::warpTime(float _elapsed_time);
 	bool isReady() { return ready; }

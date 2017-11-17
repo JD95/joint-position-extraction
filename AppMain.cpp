@@ -42,6 +42,8 @@ static bool SHOW_SKY = false;
 static bool SHOW_GROUND = true;
 static bool SHOW_COORD_AXIS = false;
 
+string filename = "";
+
 //  background color (black)
 static float clear_color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -147,7 +149,7 @@ void display(void)
 	if (anim_ctrl.isReady())
 	{
 		// TODO: pass an argument down here (file name)
-		if (anim_ctrl.updateAnimation(elapsed_time))
+		if (anim_ctrl.updateAnimation(elapsed_time, filename))
 		{
 			for (unsigned short b = 0; b < render_lists.bones.size(); b++)
 			{
@@ -255,7 +257,13 @@ int main(int argc, char **argv)
 	// initialize the animation subsystem, which reads the
 	// mocap data files and sets up the character(s)
 	string file = argv[1] != nullptr ? argv[1] : "take1.bvh";
-	anim_ctrl.loadCharacters(file);
+	filename = file;
+	anim_ctrl.loadCharacters(filename);
+	string str = "";
+	for (int i = 0; i < 26; i++) {
+		str += anim_ctrl.joint_names[i] + "X " + anim_ctrl.joint_names[i] + "Y " + anim_ctrl.joint_names[i] + "Z ";
+	}
+	anim_ctrl.readDataToFile(filename, str);
 	if (!anim_ctrl.isReady())
 	{
 		logout << "main(): Unable to load characters. Aborting program." << endl;
