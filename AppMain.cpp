@@ -299,9 +299,7 @@ int main(int argc, char **argv)
 
 		// Start the global system timer/clock.
 		system_timer.reset();
-
 		// Jump into the openGL render loop.
-
 		glutMainLoop();
 	}
 	catch (BasicException& excpt)

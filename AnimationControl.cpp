@@ -76,13 +76,10 @@ void AnimationControl::restart()
 
 bool AnimationControl::updateAnimation(float _elapsed_time, string filename)
 {
-	std::cout << "run time" << run_time << endl;
 	if (!ready) return false;
 	run_time += _elapsed_time;
 	if (characters[0] != NULL) characters[0]->update(run_time);
 	Vector3D start, end;
-	// drop box at left toes of 1st character
-	// CAREFUL - bones names are different in different skeletons
 	string fileText = "";
 	for (int i = 0; i < 26; i++) {
 		characters[0]->getBonePositions(joint_names[i].c_str(), start, end);
@@ -90,7 +87,18 @@ bool AnimationControl::updateAnimation(float _elapsed_time, string filename)
 	}
 	fileText += "\n";
 	readDataToFile(filename, fileText);
+	if ((display_data.sequence_frame[0] < foot_data[0].prev_frame)) {
+		std::cout << (display_data.sequence_frame[0] < foot_data[0].prev_frame) << endl;
+	}
 
+	OpenMotionSequenceController* controller = (OpenMotionSequenceController*)characters[0]->getMotionController();
+	display_data.sequence_time[0] = controller->getSequenceTime();
+	display_data.sequence_frame[0] = controller->getSequenceFrame();
+	if (display_data.sequence_frame[0] < foot_data[0].prev_frame) {
+		exit(0);
+	}
+
+	foot_data[0].prev_frame = display_data.sequence_frame[0];
 	return true;
 }
 
