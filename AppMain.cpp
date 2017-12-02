@@ -111,9 +111,9 @@ void drawHUD()
 void display(void)
 {
 	// Determine how much time has passed since the previous frame.
-	double elapsed_time = system_timer.elapsedTime();
+	double elapsed_time = 1.0 / 120.0;//system_timer.elapsedTime();
 
-	// Check to see if any user inputs have been received since the last frame.
+									  // Check to see if any user inputs have been received since the last frame.
 	input_processor.processInputs(elapsed_time);
 
 	// Set up openGL to draw next frame.
@@ -259,9 +259,9 @@ int main(int argc, char **argv)
 	string file = argv[1] != nullptr ? argv[1] : "take1.bvh";
 	filename = file;
 	anim_ctrl.loadCharacters(filename);
-	/*string str = "";
+	/*	string str = "";
 	for (int i = 0; i < 26; i++) {
-		str += anim_ctrl.joint_names[i] + "X " + anim_ctrl.joint_names[i] + "Y " + anim_ctrl.joint_names[i] + "Z ";
+	str += anim_ctrl.joint_names[i] + "X " + anim_ctrl.joint_names[i] + "Y " + anim_ctrl.joint_names[i] + "Z ";
 	}
 	anim_ctrl.readDataToFile(filename, str);*/
 	if (!anim_ctrl.isReady())
@@ -299,7 +299,9 @@ int main(int argc, char **argv)
 
 		// Start the global system timer/clock.
 		system_timer.reset();
+
 		// Jump into the openGL render loop.
+
 		glutMainLoop();
 	}
 	catch (BasicException& excpt)
