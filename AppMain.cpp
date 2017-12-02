@@ -259,11 +259,11 @@ int main(int argc, char **argv)
 	string file = argv[1] != nullptr ? argv[1] : "take1.bvh";
 	filename = file;
 	anim_ctrl.loadCharacters(filename);
-	string str = "";
+	/*string str = "";
 	for (int i = 0; i < 26; i++) {
 		str += anim_ctrl.joint_names[i] + "X " + anim_ctrl.joint_names[i] + "Y " + anim_ctrl.joint_names[i] + "Z ";
 	}
-	anim_ctrl.readDataToFile(filename, str);
+	anim_ctrl.readDataToFile(filename, str);*/
 	if (!anim_ctrl.isReady())
 	{
 		logout << "main(): Unable to load characters. Aborting program." << endl;
