@@ -77,7 +77,7 @@ void AnimationControl::restart()
 bool AnimationControl::updateAnimation(float _elapsed_time, string filename)
 {
 	if (!ready) return false;
-	run_time += _elapsed_time;
+	run_time += 1.0/120.0;
 	if (characters[0] != NULL) characters[0]->update(run_time);
 	Vector3D start, end;
 	string fileText = "";
